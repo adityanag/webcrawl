@@ -4,22 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using System.IO;
 
 namespace WebCrawl
 {
     class webcrawl
     {
-        
         private static string url;
         private static HttpWebRequest webRequest;
         private static HttpWebResponse response;
         private static HttpStatusCode responseStatusCode;
+        private static string[] lines;
+
 
         static void Main(string[] args)
         {
+
+            ReadArray();
+
             Console.WriteLine("Enter the url you want to test");
             url = Console.ReadLine();
-            //url = "http://www.adityanag.com/asfjgahsf";
             webRequest = (HttpWebRequest)WebRequest.Create(url);
 
             try
@@ -32,9 +36,9 @@ namespace WebCrawl
 
             }
 
-            catch (WebException we)
+            catch (WebException errorCode)
             {
-                responseStatusCode = ((HttpWebResponse)we.Response).StatusCode;
+                responseStatusCode = ((HttpWebResponse)errorCode.Response).StatusCode;
                 Console.Write((int)responseStatusCode);
                 Console.ReadKey();
 
@@ -43,5 +47,14 @@ namespace WebCrawl
 
             
         }
+
+        static void ReadArray()
+        {
+            lines = File.ReadLines("file.txt").ToArray();
+            Console.ReadKey();
+        }
+
+
+
     }
 }
