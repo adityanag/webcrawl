@@ -9,15 +9,18 @@ namespace WebCrawl
 {
     class webcrawl
     {
-        private static HttpStatusCode responseStatusCode;
+        
         private static string url;
+        private static HttpWebRequest webRequest;
+        private static HttpWebResponse response;
+        private static HttpStatusCode responseStatusCode;
 
         static void Main(string[] args)
         {
             Console.WriteLine("Enter the url you want to test");
             url = Console.ReadLine();
             //url = "http://www.adityanag.com/asfjgahsf";
-            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
+            webRequest = (HttpWebRequest)WebRequest.Create(url);
 
             try
             {
