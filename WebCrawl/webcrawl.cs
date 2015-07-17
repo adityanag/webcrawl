@@ -9,8 +9,8 @@ namespace WebCrawl
     class webcrawl
     {
         private static string[] url; //Array for user input file
-        private static HttpWebRequest webRequest; // webrequest
-        private static HttpStatusCode responseStatusCode;
+        private static HttpWebRequest urlRequest; // webrequest
+       // private static HttpStatusCode responseStatusCode;
         private static List<String> errors = new List<string>(); //List of errors - it's a list because I don't know how many errors there may be
         private static string[] errorArray; //Array of errors - I dump the list into an array before writing  errors.txt
         private static int x=0; //This is a counter that increments independently of i - just keeps the error file neat, as it increments the list by 1 every time I write an error
@@ -20,6 +20,7 @@ namespace WebCrawl
 
          
             ReadArray(); //Reads file.txt and creates an array of Urls 
+                       
            
             for (int i=0; i<url.Length;i++) //start to loop through the array
             {
@@ -27,9 +28,11 @@ namespace WebCrawl
                 try
                 {
                      //If response is 200 OK, continue silently
-                    webRequest = (HttpWebRequest)WebRequest.Create(url[i]);
-                    webRequest.Timeout = 500; //.5 second timeout
-                    HttpWebResponse response = (HttpWebResponse)webRequest.GetResponse();
+                    urlRequest = (HttpWebRequest)WebRequest.Create(url[i]);
+                    urlRequest.Proxy = null; //Set null proxy to speed up request
+                    urlRequest.Timeout = 2000; //2-second timeout
+                    
+                    HttpWebResponse response = (HttpWebResponse)urlRequest.GetResponse();
                    // responseStatusCode = response.StatusCode; // In case I want to do something with the response
                   
                 }
