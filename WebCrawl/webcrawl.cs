@@ -9,7 +9,7 @@ namespace WebCrawl
     class webcrawl
     {
         //private static string[] url; //Array for user input file
-        private static HttpWebRequest urlRequest; // webrequest
+       // private static HttpWebRequest urlRequest; // webrequest
        // private static HttpStatusCode responseStatusCode;
         private static List<String> errors = new List<string>(); //List of errors - it's a list because I don't know how many errors there may be
         private static string[] errorArray; //Array of errors - I dump the list into an array before writing  errors.txt
@@ -17,17 +17,25 @@ namespace WebCrawl
 
         static void Main(string[] args)
         {
-
+            //Variables for this method
             string[] url;
+            
+            
+
+
+
             url = ReadArray(); //Reads file.txt and creates an array of Urls 
                        
            
             for (int i=0; i<url.Length;i++) //start to loop through the array
             {
                 
+                //List<String> errors = new List<string>();
+
                 try
                 {
-                     //If response is 200 OK, continue silently
+                    HttpWebRequest urlRequest;
+                    //If response is 200 OK, continue silently
                     urlRequest = (HttpWebRequest)WebRequest.Create(url[i]);
                     urlRequest.Proxy = null; //Set null proxy to speed up request
                     urlRequest.Timeout = 2000; //2-second timeout
@@ -36,7 +44,7 @@ namespace WebCrawl
                    // responseStatusCode = response.StatusCode; // In case I want to do something with the response
                   
                 }
-
+              
                 catch (WebException errorCode)
                 {
                     if (errorCode.Response == null) //Catch Null Exception - this is usually a timeout
@@ -50,14 +58,19 @@ namespace WebCrawl
                     errors.Add("URL " + url[i] + " " + errorCode.Message);//Write error to the list
                     x++;//increment list counter
                      }
-                  
 
+                  }
+                catch (Exception errorCode)
+                {
+                    errors.Add("URL " + url[i] + " " + errorCode.Message);
+                    x++;
                 }
             }
 
             errorArray = errors.ToArray(); //Convert the list to an array - this helps with writing the error file
             WriteErrorFile();
             Console.WriteLine("Done! Check errors.txt for errors.");
+            
 
         }
 
@@ -65,8 +78,19 @@ namespace WebCrawl
 
         static string[] ReadArray()
         {
-            string[] array = File.ReadLines("file.txt").ToArray();
-            return array;
+            try
+            {
+                string[] array = File.ReadLines("file.txt").ToArray();
+                return array;
+            }
+            catch (FileNotFoundException error)
+            {
+                Console.Write(error.Message);
+                System.Environment.Exit(1);
+                return null;
+
+            }
+
 
         }
 
@@ -77,4 +101,7 @@ namespace WebCrawl
 
 
     }
+
+
+
 }
