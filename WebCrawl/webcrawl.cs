@@ -8,7 +8,7 @@ namespace WebCrawl
 {
     class webcrawl
     {
-        private static string[] url; //Array for user input file
+        //private static string[] url; //Array for user input file
         private static HttpWebRequest urlRequest; // webrequest
        // private static HttpStatusCode responseStatusCode;
         private static List<String> errors = new List<string>(); //List of errors - it's a list because I don't know how many errors there may be
@@ -18,8 +18,8 @@ namespace WebCrawl
         static void Main(string[] args)
         {
 
-         
-            ReadArray(); //Reads file.txt and creates an array of Urls 
+            string[] url;
+            url = ReadArray(); //Reads file.txt and creates an array of Urls 
                        
            
             for (int i=0; i<url.Length;i++) //start to loop through the array
@@ -63,9 +63,10 @@ namespace WebCrawl
 
 //Methods to Read from the file and write the error file follow
 
-        static void ReadArray()
+        static string[] ReadArray()
         {
-            url = File.ReadLines("file.txt").ToArray();
+            string[] array = File.ReadLines("file.txt").ToArray();
+            return array;
 
         }
 
