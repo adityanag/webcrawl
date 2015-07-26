@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22823.1
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCrawl", "WebCrawl\WebCrawl.csproj", "{7BD9D6D3-0DA2-4369-9CDD-1FD8D6574F9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCrawlTest", "WebCrawlTest\WebCrawlTest.csproj", "{BE18C032-10F6-4CBB-832C-58AA8E4FFE53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{7BD9D6D3-0DA2-4369-9CDD-1FD8D6574F9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BD9D6D3-0DA2-4369-9CDD-1FD8D6574F9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BD9D6D3-0DA2-4369-9CDD-1FD8D6574F9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE18C032-10F6-4CBB-832C-58AA8E4FFE53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE18C032-10F6-4CBB-832C-58AA8E4FFE53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE18C032-10F6-4CBB-832C-58AA8E4FFE53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE18C032-10F6-4CBB-832C-58AA8E4FFE53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

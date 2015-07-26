@@ -26,11 +26,8 @@ namespace WebCrawl
             reader.Filename = filename; //This sends the filename that I just read to the object's private property _filename
             url = reader.Read(); //This reads the file and returns the array.
 
-         
             for (int i = 0; i < url.Length; i++) //start to loop through the array
             {
-
-                
                 bool test = IsDomainAlive(url[i], 1); //Test with TCPclient to see if the domain exists at all
                 if (test) //if it exists, then check for the rest of the URI path
                 {
@@ -38,9 +35,6 @@ namespace WebCrawl
                 }
                 else
                 { errors.Add(url[i] + " " + "No such domain exists"); }
-                
-                
-
             }
 
             errorArray = errors.ToArray(); //Convert the list to an array - this helps with writing the error file
@@ -49,12 +43,9 @@ namespace WebCrawl
             Console.WriteLine("Done! Check errors.txt for errors.");
         }
 
-       
-
         private static bool IsDomainAlive(string aDomain, int aTimeoutSeconds)
-            //This method uses TCPClient to check the validity of the domain name and returns true if domain exists, and false if it doesn't
+        //This method uses TCPClient to check the validity of the domain name and returns true if domain exists, and false if it doesn't
         {
-
             System.Uri uri = new Uri(aDomain);
             string uriWithoutScheme = uri.Host.TrimEnd('/');
             try
@@ -78,23 +69,19 @@ namespace WebCrawl
             }
             catch (Exception ex)
             {
-                Console.Write(aDomain +" ---- " +ex.Message + "\n");
-                
+                Console.Write(aDomain + " ---- " + ex.Message + "\n");
             }
             return false;
         }
 
         private static string testURL(string v)
-            //This method tests the entire URL and returns the status code
+        //This method tests the entire URL and returns the status code
         {
-
-
-
             try
             {
                 HttpWebRequest urlRequest = (HttpWebRequest)WebRequest.Create(v);
                 urlRequest.Proxy = null; //Set null proxy to speed up request
-                urlRequest.Timeout = 5000; //5 second timeout  
+                urlRequest.Timeout = 5000; //5 second timeout
                 urlRequest.Method = "HEAD";
                 HttpWebResponse response = (HttpWebResponse)urlRequest.GetResponse();
                 Console.WriteLine(v + " ---- " + response.StatusCode.ToString());
@@ -105,9 +92,7 @@ namespace WebCrawl
             {
                 Console.WriteLine(v + " ---- " + exception.Message);
                 return exception.Message;
-
             }
-
         }
     }
 }
