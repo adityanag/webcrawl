@@ -79,6 +79,9 @@ namespace WebCrawl
         {
             try
             {
+                System.Net.ServicePointManager.Expect100Continue = false;
+                ServicePointManager.UseNagleAlgorithm = false;
+                ServicePointManager.DefaultConnectionLimit = 100;
                 HttpWebRequest urlRequest = (HttpWebRequest)WebRequest.Create(v);
                 urlRequest.Proxy = null; //Set null proxy to speed up request
                 urlRequest.Timeout = 5000; //5 second timeout
