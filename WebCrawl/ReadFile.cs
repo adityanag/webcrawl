@@ -1,27 +1,22 @@
 ﻿// Objects of this class read and write files.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
+using System.Linq;
 
 namespace WebCrawl
 {
-    class ReadFile
+    internal class ReadFile
 
     {
         private string _fileName; //
 
         public string Filename
         {
-            
             set
             {
                 _fileName = value;
             }
-
         }
 
         public string[] Read()
@@ -36,12 +31,10 @@ namespace WebCrawl
                 Console.Write(error.Message);
                 System.Environment.Exit(1);
                 return null;
-
             }
         }
 
-
-            public void Message()
+        public void Message()
         {
             Console.WriteLine("Message");
         }
@@ -50,7 +43,5 @@ namespace WebCrawl
         {
             System.IO.File.WriteAllLines("errors.txt", errorList);
         }
-
-
     }
 }

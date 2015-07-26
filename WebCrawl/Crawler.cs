@@ -1,95 +1,113 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.IO;
+using System.Net.Sockets;
 
 namespace WebCrawl
 {
-    class Crawler
+    internal class Crawler
     {
-       
-       static void Main(string[] args)
+        private static void Main(string[] args)
         {
             //Variables for this method
             string[] url; //Array for user input file
-
-            HttpWebRequest urlRequest;  // webrequest
-
-            int x = 0; //This is a counter that increments independently of i - just keeps the error file neat, as it increments the list by 1 every time I write an error
-
             List<String> errors = new List<string>(); //List of errors - it's a list because I don't know how many errors there may be
-
             string[] errorArray; //Array of errors - I dump the list into an array before writing  errors.txt
-
             string filename;
-
             ReadFile reader = new ReadFile(); //Object of class ReadFile - the readfile class reads and writes to file. I should probably name it better
-
-            
-            
-            if (args.Length==0)
+            //Read File
+            if (args.Length == 0)
             {
                 Console.Write("Please enter the filename: ");
-               filename = Console.ReadLine();
-               
-              }
+                filename = Console.ReadLine();
+            }
             else
             { filename = args[0]; }
-
             reader.Filename = filename; //This sends the filename that I just read to the object's private property _filename
-
             url = reader.Read(); //This reads the file and returns the array.
-            
-            for (int i=0; i<url.Length;i++) //start to loop through the array
-            {
-                try
-                {
-                    
-                    //If response is 200 OK, continue silently
-                    urlRequest = (HttpWebRequest)WebRequest.Create(url[i]);
-                    urlRequest.Proxy = null; //Set null proxy to speed up request
-                    urlRequest.Timeout = 2000; //2-second timeout
-                    
-                    HttpWebResponse response = (HttpWebResponse)urlRequest.GetResponse();
-                   // responseStatusCode = response.StatusCode; // In case I want to do something with the response
-                  
-                }
-              
-                catch (WebException errorCode)
-                {
-                    if (errorCode.Response == null) //Catch Null Exception - this is usually a timeout
-                        {                                         
-                        errors.Add("URL " + url[i] + " " + errorCode.Message);//Write error to the list
-                         x++;//increment list counter
-                        }
-                    else //Catch any other error - 404, 403, etc
-                    { 
-                   // responseStatusCode = ((HttpWebResponse)errorCode.Response).StatusCode;//Leaving this in case I want to do something later
-                    errors.Add("URL " + url[i] + " " + errorCode.Message);//Write error to the list
-                    x++;//increment list counter
-                     }
 
-                  }
-                catch (Exception errorCode)
+         
+            for (int i = 0; i < url.Length; i++) //start to loop through the array
+            {
+
+                
+                bool test = IsDomainAlive(url[i], 1); //Test with TCPclient to see if the domain exists at all
+                if (test) //if it exists, then check for the rest of the URI path
                 {
-                    errors.Add("URL " + url[i] + " " + errorCode.Message);
-                    x++;
+                    errors.Add(url[i] + " " + testURL(url[i]));
                 }
+                else
+                { errors.Add(url[i] + " " + "No such domain exists"); }
+                
+                
+
             }
-            
+
             errorArray = errors.ToArray(); //Convert the list to an array - this helps with writing the error file
             reader.Write(errorArray);
-        
-            Console.WriteLine("Done! Check errors.txt for errors.");
-            
 
+            Console.WriteLine("Done! Check errors.txt for errors.");
         }
 
+       
+
+        private static bool IsDomainAlive(string aDomain, int aTimeoutSeconds)
+            //This method uses TCPClient to check the validity of the domain name and returns true if domain exists, and false if it doesn't
+        {
+
+            System.Uri uri = new Uri(aDomain);
+            string uriWithoutScheme = uri.Host.TrimEnd('/');
+            try
+            {
+                using (TcpClient client = new TcpClient())
+                {
+                    var result = client.BeginConnect(uriWithoutScheme, 80, null, null);
+
+                    var success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(aTimeoutSeconds));
+
+                    if (!success)
+                    {
+                        Console.Write(aDomain + " ---- No such domain exists\n");
+                        return false;
+                    }
+
+                    // we have connected
+                    client.EndConnect(result);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write(aDomain +" ---- " +ex.Message + "\n");
+                
+            }
+            return false;
+        }
+
+        private static string testURL(string v)
+            //This method tests the entire URL and returns the status code
+        {
 
 
+
+            try
+            {
+                HttpWebRequest urlRequest = (HttpWebRequest)WebRequest.Create(v);
+                urlRequest.Proxy = null; //Set null proxy to speed up request
+                urlRequest.Timeout = 5000; //5 second timeout  
+                urlRequest.Method = "HEAD";
+                HttpWebResponse response = (HttpWebResponse)urlRequest.GetResponse();
+                Console.WriteLine(v + " ---- " + response.StatusCode.ToString());
+                response.Close();
+                return response.StatusCode.ToString();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(v + " ---- " + exception.Message);
+                return exception.Message;
+
+            }
+
+        }
     }
-
-
-
 }
