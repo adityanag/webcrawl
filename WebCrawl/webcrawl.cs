@@ -20,15 +20,13 @@ namespace WebCrawl
             string filename;
 
             if (args.Length==0)
-            {
-                Console.Write("Please enter the filename: ");
-               filename = Console.ReadLine();
-               
+              {
+               Console.Write("Please enter the filename: ");
+               filename = Console.ReadLine();               
               }
             else
             { filename = args[0]; }
-            
-
+           
             url = ReadArray(filename); //Reads file.txt and creates an array of Urls 
 
             for (int i=0; i<url.Length;i++) //start to loop through the array
@@ -73,7 +71,6 @@ namespace WebCrawl
             WriteErrorFile(errorArray);
             Console.WriteLine("Done! Check errors.txt for errors.");
             
-
         }
 
 //Methods to Read from the file and write the error file follow
@@ -88,7 +85,7 @@ namespace WebCrawl
             catch (FileNotFoundException error)
             {
                 Console.Write(error.Message);
-                System.Environment.Exit(1);
+                System.Environment.Exit(0);
                 return null;
 
             }
