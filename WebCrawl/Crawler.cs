@@ -9,6 +9,9 @@ namespace WebCrawl
     {
         private static void Main(string[] args)
         {
+            System.Net.ServicePointManager.Expect100Continue = false;
+            ServicePointManager.UseNagleAlgorithm = false;
+            ServicePointManager.DefaultConnectionLimit = 100;
             //Variables for this method
             string[] url; //Array for user input file
             List<String> errors = new List<string>(); //List of errors - it's a list because I don't know how many errors there may be
@@ -79,9 +82,7 @@ namespace WebCrawl
         {
             try
             {
-                System.Net.ServicePointManager.Expect100Continue = false;
-                ServicePointManager.UseNagleAlgorithm = false;
-                ServicePointManager.DefaultConnectionLimit = 100;
+                
                 HttpWebRequest urlRequest = (HttpWebRequest)WebRequest.Create(v);
                 urlRequest.Proxy = null; //Set null proxy to speed up request
                 urlRequest.Timeout = 5000; //5 second timeout
