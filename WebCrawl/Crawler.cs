@@ -84,7 +84,8 @@ namespace WebCrawl
             {
                 
                 HttpWebRequest urlRequest = (HttpWebRequest)WebRequest.Create(v);
-                //urlRequest.Proxy = null; //Set null proxy to speed up request -- comment this out to use Fiddler, uncomment it to force the app to bypass all proxies (which may not be a good idea)
+                //urlRequest.Proxy = null; //Set null proxy to speed up request -- comment this out to use Fiddler, uncomment it to force the app to bypass all proxies (which may not be a good idea). See how
+                //it goes
                 urlRequest.Timeout = 5000; //5 second timeout
                 urlRequest.Method = "HEAD";
                 urlRequest.ContinueTimeout = 100;
