@@ -61,7 +61,7 @@ namespace WebCrawl
 
                     if (!success)
                     {
-                        Console.Write(aDomain + " ---- No such domain exists\n");
+                       // Console.Write(aDomain + " ---- No such domain exists\n");
                         return false;
                     }
 
@@ -72,7 +72,7 @@ namespace WebCrawl
             }
             catch (Exception ex)
             {
-                Console.Write(aDomain + " ---- " + ex.Message + "\n");
+               // Console.Write(aDomain + " ---- " + ex.Message + "\n");
             }
             return false;
         }
@@ -84,17 +84,24 @@ namespace WebCrawl
             {
                 
                 HttpWebRequest urlRequest = (HttpWebRequest)WebRequest.Create(v);
-                urlRequest.Proxy = null; //Set null proxy to speed up request
+                //urlRequest.Proxy = null; //Set null proxy to speed up request -- comment this out to use Fiddler, uncomment it to force the app to bypass all proxies (which may not be a good idea)
                 urlRequest.Timeout = 5000; //5 second timeout
                 urlRequest.Method = "HEAD";
+                urlRequest.ContinueTimeout = 100;
+                urlRequest.AllowAutoRedirect = false; //Don't follow redirects - this speeds stuff up a lot, but will not follow redirects
                 HttpWebResponse response = (HttpWebResponse)urlRequest.GetResponse();
-                Console.WriteLine(v + " ---- " + response.StatusCode.ToString());
+                //if (response.Headers["Location"] == null) // The location header is the redirect response
+                //{ Console.WriteLine(v + " ---- " + response.StatusCode.ToString()); }
+                //else
+                //{
+                //    Console.WriteLine(v + " ---- " + response.Headers["Location"]);
+                //}
                 response.Close();
                 return response.StatusCode.ToString();
             }
             catch (Exception exception)
             {
-                Console.WriteLine(v + " ---- " + exception.Message);
+                //Console.WriteLine(v + " ---- " + exception.Message);
                 return exception.Message;
             }
         }
